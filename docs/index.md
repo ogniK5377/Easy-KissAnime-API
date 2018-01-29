@@ -146,4 +146,4 @@ print MetaObject # Prints all keys and their values
 | status        | Current airing status                        | String                          |
 | views         | Total amount of anime views                  | String                          |
 | summary       | Description/Summary of the anime             | String                          |
-| episodes      | Information about each episode               | Array of AnimeEpisodeMetaObject |
+| episodes      | Information about each episode               | Array of AnimeEpisodeInfoObject |
