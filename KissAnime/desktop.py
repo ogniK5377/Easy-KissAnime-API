@@ -462,9 +462,9 @@ class KissAnime(object):
 
         ep_list = listing[1].cssselect('tr')
         ep_meta = []
-        if len(episode_list) > 2:
-            for i in range(2, len(episode_list)):  # First two are junk
-                episode = episode_list[i]
+        if len(ep_list) > 2:
+            for i in range(2, len(ep_list)):  # First two are junk
+                episode = ep_list[i]
                 info = episode.cssselect('td')
                 if len(info) < 2:
                     continue
