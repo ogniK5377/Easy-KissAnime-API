@@ -6,6 +6,7 @@ There's two base modules which could be used. One is a desktop module which uses
 
 ## API Reference
 * [Desktop](#desktop)
+  * [Unit Testing](#unit-testing)
   * [KissAnime](#kissanime)
     * [get\_random\_anime](#get-random-anime)
     * [search](#search)
@@ -22,13 +23,13 @@ There's two base modules which could be used. One is a desktop module which uses
 # Desktop
 The desktop module is mainly used for the desktop website. The module does however also make use of the mobile website. The reason for this is to bypass the "captcha" that is used when trying to view videos. As of right now this is the only way to get around the captcha.
 
+## Unit Testing
+To run the unit test, in your root directory just execute `python desktop_test.py -v`. This should run all the unit tests to make sure everything is working fine.
+
 ## KissAnime
 In order to use the API you need to first initialize it. This can easily be done with just calling
 ```kiss_desktop = desktop.KissAnime()```
 Initalization will take about 10 seconds on the first startup. This is due to cloudflares automated captcha being stored. Once the captcha is solved it's stored in an sqlite3 database called `cloudflare.db`. Everytime you initalize `desktop.KissAnime()`, the sqlite3 database will be checked and the cookies will be validated. If they still work the bootup process will be a lot faster, however if the cookies have expired you would need to wait.
-
-## Unit test
-To run the unit test, in your root directory just execute `python desktop_test.py -v`. This should run all the unit tests to make sure everything is working fine.
 
 ### Get Random Anime
 `get_random_anime` takes two arguments which are both optional and are strings. This function also returns a [AnimeMetaObject](#animemetaobject). It can take a `genre` which can range from `All, Action, Adventure, Cars, Cartoon, Comedy, Dementia, Demons, Drama, Dub, Ecchi, Fantasy, Game, Harem, Historical, Horror, Josei, Kids, Magic, Martial-Arts, Mecha, Military, Movie, Music, Mystery, ONA, OVA, Parody, Police, Psychological, Romance, Samurai, School, Sci-Fi, Seinen, Shoujo, Shoujo-Ai, Shounen, Shounen-Ai, Slice-of-Life, Space, Special, Sports, Super-Power, Supernatural, Thriller, Vampire, Yuri`. This function also can take the name of multiple animes to be excluded from the random result. Each anime being excluded must have their spaces replaced with `-` and must end with `;`.
