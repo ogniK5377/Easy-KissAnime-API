@@ -6,6 +6,7 @@ There's two base modules which could be used. One is a desktop module which uses
 
 ## API Reference
 * [Desktop](#desktop)
+  * [Unit Testing](#unit-testing)
   * [KissAnime](#kissanime)
     * [get\_random\_anime](#get-random-anime)
     * [search](#search)
@@ -21,6 +22,9 @@ There's two base modules which could be used. One is a desktop module which uses
 
 # Desktop
 The desktop module is mainly used for the desktop website. The module does however also make use of the mobile website. The reason for this is to bypass the "captcha" that is used when trying to view videos. As of right now this is the only way to get around the captcha.
+
+## Unit Testing
+To run the unit test, in your root directory just execute `python desktop_test.py -v`. This should run all the unit tests to make sure everything is working fine.
 
 ## KissAnime
 In order to use the API you need to first initialize it. This can easily be done with just calling
