@@ -35,14 +35,16 @@ class ConnectionHandler(object):
             self.cf_db.close()
 
     def initalize_sqldb(self):
-        """Initalize the SQL database if it's not already setup. Also validate that the sql database
+        """Initalize the SQL database if it's not already setup. Also validate
+        that the sql database
         actually created and is valid."""
-        if self.cf_db is None: # DB Invalid
+        if self.cf_db is None:  # DB Invalid
             return False
-        self.cursor = self.cf_db.cursor() # Needed to execute queries
+        self.cursor = self.cf_db.cursor()  # Needed to execute queries
         self.cursor.execute('''CREATE TABLE IF NOT EXISTS Cookies
-        (DomainID INTEGER PRIMARY KEY UNIQUE, Cookies TEXT NOT NULL, UserAgent TEXT NOT NULL);''')
-        self.cf_db.commit() # Commit changes to the DB
+        (DomainID INTEGER PRIMARY KEY UNIQUE, Cookies TEXT NOT NULL, UserAgent\
+         TEXT NOT NULL);''')
+        self.cf_db.commit()  # Commit changes to the DB
         return True
 
     def setup_mobilecloudflare(self):
@@ -70,7 +72,7 @@ class ConnectionHandler(object):
                 'Cookie': sql_row[1],
             })
             req = session.get(BASE_URL)
-            if req.status_code == 200: # Valid cookie still
+            if req.status_code == 200:  # Valid cookie still
                 return cfscrape.create_scraper(sess=session)
             else:  # Cookie needs to be updated
                 session.headers.update({
@@ -207,9 +209,9 @@ class AnimeListObject(object):
         return self.dictionary()[key.lower()]
 
     def __str__(self):
-        cur_str = 'Title:       %s\n'%self.title
-        cur_str += 'Status:      %s\n'%self.status
-        cur_str += 'URL:         %s'%self.url
+        cur_str = 'Title:       %s\n' % self.title
+        cur_str += 'Status:      %s\n' % self.status
+        cur_str += 'URL:         %s' % self.url
         return cur_str
 
 
@@ -248,16 +250,17 @@ class AnimeEpisodeInfoObject(object):
         return self.dictionary()[key.lower()]
 
     def __str__(self):
-        cur_str = 'Title:       %s\n'%self.title
-        cur_str += 'Date:        %s\n'%self.date
-        cur_str += 'URL:         %s'%self.url
+        cur_str = 'Title:       %s\n' % self.title
+        cur_str += 'Date:        %s\n' % self.date
+        cur_str += 'URL:         %s' % self.url
         return cur_str
 
 
 class AnimeEpisodeMetaObject(object):
     """Anime meta data"""
     def __init__(self, title='N/A', other_names=None, tags=None,
-                 air_date='N/A', status='N/A', views='N/A', summary='N/A', episodes=None):
+                 air_date='N/A', status='N/A', views='N/A',
+                 summary='N/A', episodes=None):
         other_names = other_names or []
         tags = tags or []
         episodes = episodes or []
@@ -325,16 +328,16 @@ class AnimeEpisodeMetaObject(object):
         return self.dictionary()[key.lower()]
 
     def __str__(self):
-        cur_str = 'Title:        %s\n'%self.title
-        cur_str += 'Other Titles: %s\n'%", ".join(self.other_names)
-        cur_str += 'Tags:         %s\n'%", ".join(self.tags)
-        cur_str += 'AirDate:      %s\n'%self.air_date
-        cur_str += 'Status:       %s\n'%self.status
-        cur_str += 'Views:        %s\n'%self.views
-        cur_str += 'Summary:      %s\n'%self.summary
+        cur_str = 'Title:        %s\n' % self.title
+        cur_str += 'Other Titles: %s\n' % ", ".join(self.other_names)
+        cur_str += 'Tags:         %s\n' % ", ".join(self.tags)
+        cur_str += 'AirDate:      %s\n' % self.air_date
+        cur_str += 'Status:       %s\n' % self.status
+        cur_str += 'Views:        %s\n' % self.views
+        cur_str += 'Summary:      %s\n' % self.summary
         cur_str += 'Episodes:       \n'
         for episode in self.episodes:
-            cur_str += '          %s\n'%episode.get_title()
+            cur_str += '          %s\n' % episode.get_title()
         cur_str = cur_str[:-1]
         return cur_str
 
@@ -375,7 +378,7 @@ class KissAnime(object):
             'keyword': keyword
         })
         tree = lxml.html.fromstring(content.text)
-        animes = CSSSelector('a')(tree) # Everything is just a link
+        animes = CSSSelector('a')(tree)  # Everything is just a link
         animes = animes or []
         results = []
         for anime in animes:
@@ -410,7 +413,8 @@ class KissAnime(object):
         return results
 
     def get_anime_info(self, obj):
-        """Returns an AnimeInfoObject. A url, or any meta object can be passed"""
+        """Returns an AnimeInfoObject. A url,
+        or any meta object can be passed"""
         url = ''
         if isinstance(obj, basestring):
             if obj[:1] == '/':
