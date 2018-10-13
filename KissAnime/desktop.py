@@ -8,10 +8,14 @@ import lxml.html
 from lxml.cssselect import CSSSelector
 
 BASE_URL = "http://kissanime.ru/"
+
 MOBILE_BASE_URL = 'http://kissanime.ru/Mobile/'
+
 USERAGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Gecko/20100101 \
 Firefox/56.0"
+
 # Mobile user agent is required to get around the captcha
+
 MOBILE_USERAGENT = "Mozilla/5.0 (iPhone; CPU iPhone OS 11_0_1 like Mac OS X) \
 AppleWebKit/604.1.38 (KHTML, like Gecko) \
 Version/11.0 Mobile/15A402 Safari/604.1"
@@ -23,7 +27,7 @@ class ConnectionHandler(object):
         self.is_initalized = False
         self.cf_db = sqlite3.connect(database)  # Create/Load DB on disk
         if not self.initalize_sqldb():  # Initalize if not already created
-            return
+         raise Exception("cannot initalize sql db")
         self.scrape = self.setup_cloudflare()  # Main setup here
         self.mobile_scrape = self.setup_mobilecloudflare()  # Captcha bypass
         self.is_initalized = True
@@ -95,43 +99,22 @@ class ConnectionHandler(object):
 class AnimeMetaObject(object):
     """Basic anime information meta object"""
     def __init__(self, title='N/A', url='N/A', tags='N/A', description='N/A'):
-        title = title or 'N/A'
-        url = url or 'N/A'
-        tags = tags or []
-        description = description or 'N/A'
 
         self.title = title.encode('utf-8')
         self.url = url.encode('utf-8')
         self.tags = [tag.encode('utf-8') for tag in tags]
         self.description = description.encode('utf-8')
-
-    def get_title(self):
-        """Returns anime title"""
-        return self.title
-
-    def get_url(self):
-        """Returns anime url"""
-        return self.url
-
-    def get_tags(self):
-        """Returns anime tags"""
-        return self.tags
-
-    def get_description(self):
-        """Returns anime description"""
-        return self.description
-
-    def dictionary(self):
-        """Returns all metadata in a dictionary all at once"""
-        return {
-            'title': self.title,
-            'url': self.url,
-            'tags': self.tags,
-            'description': self.description,
-        }
-
+        
+        self.dictionary = {
+                           'title':self.title,
+                            'url':self.url,
+                            'tags':self.tags,
+                            'description':self.description
+            
+                          }
+        
     def __getitem__(self, key):
-        return self.dictionary()[key.lower()]
+        return self.dictionary[key.lower()]
 
     def __str__(self):
         cur_str = 'Title:       %s\n' % self.title
@@ -144,29 +127,16 @@ class AnimeMetaObject(object):
 class AnimeSearchObject(object):
     """Anime meta data for search results"""
     def __init__(self, title='N/A', url='N/A'):
-        title = title or 'N/A'
-        url = url or 'N/A'
 
         self.title = title.encode('utf-8')
         self.url = url.encode('utf-8')
-
-    def get_title(self):
-        """Returns anime title"""
-        return self.title
-
-    def get_url(self):
-        """Returns anime url"""
-        return self.url
-
-    def dictionary(self):
-        """Returns all metadata in a dictionary all at once"""
-        return {
-            'title': self.title,
-            'url': self.url,
-        }
-
+        self.dictionary = {
+                            'title':self.title,
+                            'url':self.url
+                          }
+        
     def __getitem__(self, key):
-        return self.dictionary()[key.lower()]
+        return self.dictionary[key.lower()]
 
     def __str__(self):
         cur_str = 'Title:       %s\n' % self.title
@@ -177,36 +147,18 @@ class AnimeSearchObject(object):
 class AnimeListObject(object):
     """Anime meta data for the anime list"""
     def __init__(self, title='N/A', url='N/A', status='N/A'):
-        title = title or 'N/A'
-        url = url or 'N/A'
-        status = status or 'N/A'
 
         self.title = title.encode('utf-8')
         self.url = url.encode('utf-8')
         self.status = status.encode('utf-8')
-
-    def get_title(self):
-        """Returns anime title"""
-        return self.title
-
-    def get_url(self):
-        """Returns anime url"""
-        return self.url
-
-    def get_status(self):
-        """Returns anime status"""
-        return self.status
-
-    def dictionary(self):
-        """Returns all metadata in a dictionary all at once"""
-        return {
+        self.dictionary = {
             'title': self.title,
             'url': self.url,
             'status': self.status
         }
 
     def __getitem__(self, key):
-        return self.dictionary()[key.lower()]
+        return self.dictionary[key.lower()]
 
     def __str__(self):
         cur_str = 'Title:       %s\n' % self.title
@@ -225,29 +177,14 @@ class AnimeEpisodeInfoObject(object):
         self.title = title.encode('utf-8')
         self.url = url.encode('utf-8')
         self.date = date.encode('utf-8')
-
-    def get_title(self):
-        """Returns anime title"""
-        return self.title
-
-    def get_url(self):
-        """Returns anime url"""
-        return self.url
-
-    def get_date(self):
-        """Returns anime date"""
-        return self.date
-
-    def dictionary(self):
-        """Returns all metadata in a dictionary all at once"""
-        return {
+        self.dictionary = {
             'title': self.title,
             'url': self.url,
             'date': self.date
         }
 
     def __getitem__(self, key):
-        return self.dictionary()[key.lower()]
+        return self.dictionary[key.lower()]
 
     def __str__(self):
         cur_str = 'Title:       %s\n' % self.title
@@ -261,15 +198,7 @@ class AnimeEpisodeMetaObject(object):
     def __init__(self, title='N/A', other_names=None, tags=None,
                  air_date='N/A', status='N/A', views='N/A',
                  summary='N/A', episodes=None):
-        other_names = other_names or []
-        tags = tags or []
-        episodes = episodes or []
-        title = title or 'N/A'
-        air_date = air_date or 'N/A'
-        status = status or 'N/A'
-        views = views or 'N/A'
-        summary = summary or 'N/A'
-
+       
         self.title = title.encode('utf-8')
         self.other_names = other_names
         self.tags = tags
@@ -278,54 +207,20 @@ class AnimeEpisodeMetaObject(object):
         self.views = views.encode('utf-8')
         self.summary = summary.encode('utf-8')
         self.episodes = episodes
-
-    def get_title(self):
-        """Returns anime title"""
-        return self.title
-
-    def get_other_names(self):
-        """Returns anime other names"""
-        return self.other_names
-
-    def get_tags(self):
-        """Returns anime tags"""
-        return self.tags
-
-    def get_air_date(self):
-        """Returns anime air date"""
-        return self.air_date
-
-    def get_status(self):
-        """Returns anime status"""
-        return self.status
-
-    def get_views(self):
-        """Returns anime views"""
-        return self.views
-
-    def get_summary(self):
-        """Returns anime summary"""
-        return self.summary
-
-    def get_episodes(self):
-        """Returns anime episodes"""
-        return self.episodes
-
-    def dictionary(self):
-        """Returns all metadata in a dictionary all at once"""
-        return {
-            'title': self.title,
-            'other_names': self.other_names,
-            'tags': self.tags,
-            'air_date': self.air_date,
-            'status': self.status,
-            'views': self.views,
-            'summary': self.summary,
-            'episodes': self.episodes
-        }
+        self.dictionary = {
+                           'title':self.title,
+                            'other_names': self.other_names,
+                            'tags': self.tags,
+                            'air_date':self.air_date,
+                            'status': self.status,
+                            'views':self.view,
+                            'summary':self.summary,
+                            'episodes':self.episodes,
+                           }
+                         
 
     def __getitem__(self, key):
-        return self.dictionary()[key.lower()]
+        return self.dictionary[key.lower()]
 
     def __str__(self):
         cur_str = 'Title:        %s\n' % self.title
