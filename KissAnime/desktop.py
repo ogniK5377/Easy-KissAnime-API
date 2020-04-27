@@ -7,9 +7,9 @@ import requests
 import lxml.html
 from lxml.cssselect import CSSSelector
 
-BASE_URL = "http://kissanime.ru/"
+BASE_URL = "https://kissanime.ru/"
 
-MOBILE_BASE_URL = 'http://kissanime.ru/Mobile/'
+MOBILE_BASE_URL = 'https://kissanime.ru/Mobile/'
 
 USERAGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Gecko/20100101 \
 Firefox/56.0"
@@ -123,6 +123,8 @@ class AnimeMetaObject(object):
         cur_str += 'Description: %s' % self.description
         return cur_str
 
+    def get_url(self):
+        return self.url
 
 class AnimeSearchObject(object):
     """Anime meta data for search results"""
@@ -143,6 +145,11 @@ class AnimeSearchObject(object):
         cur_str += 'URL:         %s' % self.url
         return cur_str
 
+    def get_url(self):
+        return self.url
+
+    def get_title(self):
+        return self.title
 
 class AnimeListObject(object):
     """Anime meta data for the anime list"""
@@ -193,6 +200,13 @@ class AnimeEpisodeInfoObject(object):
         return cur_str
 
 
+    def get_url(self):
+        return self.url
+
+    def get_title(self):
+        return self.title
+
+
 class AnimeEpisodeMetaObject(object):
     """Anime meta data"""
     def __init__(self, title='N/A', other_names=None, tags=None,
@@ -213,7 +227,7 @@ class AnimeEpisodeMetaObject(object):
                             'tags': self.tags,
                             'air_date':self.air_date,
                             'status': self.status,
-                            'views':self.view,
+                            'views':self.views,
                             'summary':self.summary,
                             'episodes':self.episodes,
                            }
@@ -236,6 +250,8 @@ class AnimeEpisodeMetaObject(object):
         cur_str = cur_str[:-1]
         return cur_str
 
+    def get_episodes(self):
+        return self.episodes
 
 class KissAnime(object):
     """Main API Object"""
